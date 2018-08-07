@@ -44,7 +44,7 @@ docker build -t webgoat/webgoat-8.0 .
         stage('IQ-Scan Container') {
           steps {
             sh 'docker save webgoat/webgoat-8.0 -o $WORKSPACE/webgoat.tar'
-            nexusPolicyEvaluation(iqStage: 'Stage', iqApplication: 'webgoat8')
+            nexusPolicyEvaluation(iqStage: 'stage-release', iqApplication: 'webgoat8')
           }
         }
       }
