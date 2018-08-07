@@ -51,17 +51,17 @@ docker build -t webgoat/webgoat-8.0 .
     }
     stage('Publish Container') {
       when {
-        branch 'master'
+        branch 'develop'
       }
       steps {
         sh '''
-                    docker tag webgoat/webgoat-8.0 mycompany.com:5000/webgoat/webgoat-8.0:8.0
-                    docker push mycompany.com:5000/webgoat/webgoat-8.0
+                    docker tag webgoat/webgoat-8.0 local-mike:19447/webgoat/webgoat-8.0:8.0
+                    docker push local-mike:19447/webgoat/webgoat-8.0
                 '''
       }
     }
   }
   tools {
-    maven 'M3'
+    maven 'Maven 3.5.3 - Local Install'
   }
 }
