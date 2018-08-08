@@ -3,6 +3,10 @@ pipeline {
   stages {
     stage('Build') {
       steps {
+        echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+        
+        input 'Continue?'
+
         sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
