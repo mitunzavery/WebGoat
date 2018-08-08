@@ -6,8 +6,10 @@ pipeline {
         sh '''
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
+                    echo "Build Number = ${env.BUILD_NUMBER}"
                     mvn -B install -Dmaven.test.skip=true
                 '''
+        input 'Continue?'
       }
     }
     stage('Scan App - Build Container') {
