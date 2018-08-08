@@ -12,7 +12,7 @@ pipeline {
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
                     echo "Build Number = ${BUILD_ID}"
-                    echo "mvn -B clean install -Dmaven.test.skip=true"
+                    mvn -B clean install -Dmaven.test.skip=true
                 '''
         //input 'Continue?'
       }
