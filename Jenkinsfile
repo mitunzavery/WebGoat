@@ -4,13 +4,14 @@ pipeline {
     stage('Build') {
       steps {
         echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
-        
+
         input 'Continue?'
 
         sh '''
+                    env
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
-                    echo "Build Number = ${env.BUILD_NUMBER}"
+                    echo "Build Number = ${BUILD_ID}"
                     mvn -B install -Dmaven.test.skip=true
                 '''
         input 'Continue?'
