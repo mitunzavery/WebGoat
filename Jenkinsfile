@@ -12,7 +12,7 @@ pipeline {
                     echo "PATH = ${PATH}"
                     echo "M2_HOME = ${M2_HOME}"
                     echo "Build Number = ${BUILD_ID}"
-                    mvn -B install -Dmaven.test.skip=true
+                    echo "mvn -B clean install -Dmaven.test.skip=true"
                 '''
         //input 'Continue?'
       }
@@ -83,7 +83,16 @@ pipeline {
       steps {
         //input 'Create tag in Nexus Repo?'
 
-        createTag nexusInstanceId: 'nexus3-demo', tagName: "RBCDemoJenkinsfile-Webgoat8-${env.BUILD_ID}"
+        createTag nexusInstanceId: 'nexus3-demo', tagName: "DockerStagingDemoJenkinsfile-Webgoat8-${env.BUILD_ID}"
+
+        associateTag nexusInstanceId: 'nexus3-demo', search: [[key: 'repository', value: 'docker-hosted-beta'], [key: 'name', value: "webgoat/webgoat-8.0-${env.BUILD_ID}"], [key: 'version', value: "8.0-${env.BUILD_ID}"]], tagName: "DockerStagingDemoJenkinsfile-Webgoat8-${env.BUILD_ID}"
+
+        input 'Move Image out of Beta?'
+
+        moveComponents destination: 'docker-hosted', nexusInstanceId: 'nexus3-demo', tagName: "DockerStagingDemoJenkinsfile-Webgoat8-${env.BUILD_ID}"
+
+
+
       }
     }
   }
