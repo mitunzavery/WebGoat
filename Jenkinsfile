@@ -5,7 +5,7 @@ pipeline {
       steps {
         echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
 
-        input 'Continue?'
+        input 'Build with maven?'
 
         sh '''
                     env
@@ -21,6 +21,8 @@ pipeline {
       parallel {
         stage('IQ-BOM') {
           steps {
+            input 'Scan with IQ at Build?'
+
             nexusPolicyEvaluation(iqApplication: 'webgoat8', iqStage: 'build', iqScanPatterns: [[scanPattern: '']])
           }
         }
@@ -31,8 +33,11 @@ pipeline {
         }
         stage('Build Container') {
           steps {
+    
+            input 'Build with docker?'
+
             sh '''cd webgoat-server
-docker build -t webgoat/webgoat-8.0 .
+                  docker build -t webgoat/webgoat-8.0-${BUILD_ID} .
                     '''
           }
         }
@@ -50,7 +55,9 @@ docker build -t webgoat/webgoat-8.0 .
         }
         stage('IQ-Scan Container') {
           steps {
-            sh 'docker save webgoat/webgoat-8.0 -o $WORKSPACE/webgoat.tar'
+            input 'Scan with IQ at Stage-Release?'
+
+            sh 'docker save webgoat/webgoat-8.0-${BUILD_ID} -o $WORKSPACE/webgoat.tar'
             nexusPolicyEvaluation(iqStage: 'stage-release', iqApplication: 'webgoat8')
           }
         }
@@ -61,10 +68,22 @@ docker build -t webgoat/webgoat-8.0 .
         branch 'develop'
       }
       steps {
+        input 'Push to Nexus Repo?'
+
         sh '''
-                    docker tag webgoat/webgoat-8.0 local-mike:19447/webgoat/webgoat-8.0:8.0
-                    docker push local-mike:19447/webgoat/webgoat-8.0
+                    docker tag webgoat/webgoat-8.0-${BUILD_ID} local-mike:19447/webgoat/webgoat-8.0-${BUILD_ID}:8.0-${BUILD_ID}
+                    docker push local-mike:19447/webgoat/webgoat-8.0-${BUILD_ID}
                 '''
+      }
+    }
+    stage('Create Tag') {
+      when {
+        branch 'develop'
+      }
+      steps {
+        input 'Create tag in Nexus Repo?'
+
+        createTag nexusInstanceId: 'nexus3-demo', tagName: 'RBCDemoJenkinsfile'
       }
     }
   }
