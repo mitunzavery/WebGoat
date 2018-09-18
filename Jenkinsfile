@@ -23,7 +23,7 @@ pipeline {
           steps {
             //input 'Scan with IQ at Build?'
 
-            nexusPolicyEvaluation(iqApplication: 'webgoat8', iqStage: 'build', iqScanPatterns: [[scanPattern: '']])
+            nexusPolicyEvaluation(iqApplication: 'webgoat', iqStage: 'build', iqScanPatterns: [[scanPattern: '']])
           }
         }
         stage('Static Analysis') {
