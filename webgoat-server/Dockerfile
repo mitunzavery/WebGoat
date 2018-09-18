@@ -11,4 +11,4 @@ RUN chmod +x /home/webgoat/start.sh
 
 USER webgoat
 RUN cd /home/webgoat/; mkdir -p .webgoat
-COPY target/webgoat-server-${webgoat_version}.jar /home/webgoat/webgoat.jar
+#COPY target/webgoat-server-${webgoat_version}.jar /home/webgoat/webgoat.jar
