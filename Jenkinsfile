@@ -23,7 +23,7 @@ pipeline {
           steps {
             //input 'Scan with IQ at Build?'
 
-            nexusPolicyEvaluation(iqApplication: 'webgoat', iqStage: 'build', iqScanPatterns: [[scanPattern: '']])
+            nexusPolicyEvaluation(iqApplication: 'WebGoat', iqStage: 'build', iqScanPatterns: [[scanPattern: '']])
           }
         }
         stage('Static Analysis') {
@@ -58,7 +58,7 @@ pipeline {
             //input 'Scan with IQ at Stage-Release?'
 
             sh '/usr/local/bin/docker save webgoat/webgoat-8.0-${BUILD_ID} -o $WORKSPACE/webgoat.tar'
-            nexusPolicyEvaluation(iqStage: 'stage-release', iqApplication: 'webgoat')
+            nexusPolicyEvaluation(iqStage: 'stage-release', iqApplication: 'WebGoat')
           }
         }
       }
