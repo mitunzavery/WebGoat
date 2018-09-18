@@ -14,7 +14,8 @@
     </parent>
 
     <modules>
-        <module>bypass-restrictions</module>
+        <!-- Use UTF-8 Encoding 
+	<module>bypass-restrictions</module> -->
         <module>challenge</module>
         <module>client-side-filtering</module>
         <module>cross-site-scripting</module>
